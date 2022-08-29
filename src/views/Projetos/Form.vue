@@ -28,10 +28,20 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useStore } from "@/store";
-import { computed } from "@vue/reactivity";
 
 export default defineComponent({
     name: 'ProjetosView',
+    props: {
+        id: {
+            type: String
+        }
+    },
+    mounted () {
+        if(this.id) {
+            const project = this.store.state.projects.find(proj => proj.id == this.id)
+            this.projectName = project?.name || ''
+        }
+    },
     data () {
         return {
             projectName: "",
@@ -39,9 +49,16 @@ export default defineComponent({
     },
     methods: {
         save() {
-            this.store.commit('ADD_PROJECT', this.projectName)
+            if (this.id) {
+                this.store.commit('CHANGE_PROJECT', {
+                    id: this.id,
+                    name: this.projectName
+                })
+            } else {
+                this.store.commit('ADD_PROJECT', this.projectName)
+            }
             this.projectName = "";
-            this.$router.push('/projects')
+            this.$router.push('/projetos')
         }
     },
     setup () {

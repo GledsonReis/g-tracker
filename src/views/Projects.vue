@@ -1,19 +1,32 @@
 <template>
     <section class="project">
         <h1>Projetos</h1>
-
+        <router-link to="/projetos/novo" class="button">
+            <span class="icon is-small">
+                <i class="fas fa-plus"></i>
+            </span>
+            <span>Novo projeto</span>
+        </router-link>
         <table class="table">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Nome</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
 
             <tbody>
                 <tr v-for="project in projects" :key="project.id">
-                    <td>{{project.id}}</td>
-                    <td>{{project.name}}</td>
+                    <td>{{ project.id }}</td>
+                    <td>{{ project.name }}</td>
+                    <td>
+                        <router-link :to="`/projetos/${project.id}`" class="button">
+                            <span class="icon is-small">
+                                <i class="fas fa-pencil-alt"></i>
+                            </span>
+                        </router-link>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -27,7 +40,7 @@ import { computed } from "@vue/reactivity";
 
 export default defineComponent({
     name: 'ProjetosView',
-    setup () {
+    setup() {
         const store = useStore()
         return {
             projects: computed(() => store.state.projects)
@@ -38,12 +51,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
-    .project {
-        padding: 1.25rem; 
-    }
+.project {
+    padding: 1.25rem;
+}
 
-    label {
-        position: relative;
-        background: none!important;
-    }
+label {
+    position: relative;
+    background: none !important;
+}
 </style>
