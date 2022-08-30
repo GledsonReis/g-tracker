@@ -1,7 +1,5 @@
 <template>
-    <section class="project">
-        <h1>Projetos</h1>
-
+    <section>
         <form @submit.prevent="save" class="form">
             <div class="field">
                 <label for="projectName">Nome do Projeto</label>
@@ -72,10 +70,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-    .project {
-        padding: 1.25rem; 
-    }
-
     label {
         position: relative;
         background: none!important;
