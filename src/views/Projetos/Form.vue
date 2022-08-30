@@ -26,6 +26,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useStore } from "@/store";
+import { CHANGE_PROJECT, ADD_PROJECT } from "@/store/mutations";
 
 export default defineComponent({
     name: 'ProjetosView',
@@ -48,12 +49,12 @@ export default defineComponent({
     methods: {
         save() {
             if (this.id) {
-                this.store.commit('CHANGE_PROJECT', {
+                this.store.commit(CHANGE_PROJECT, {
                     id: this.id,
                     name: this.projectName
                 })
             } else {
-                this.store.commit('ADD_PROJECT', this.projectName)
+                this.store.commit(ADD_PROJECT, this.projectName)
             }
             this.projectName = "";
             this.$router.push('/projetos')
