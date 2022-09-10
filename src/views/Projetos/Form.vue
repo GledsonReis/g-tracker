@@ -26,9 +26,10 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useStore } from "@/store";
-import { CHANGE_PROJECT, ADD_PROJECT, NOTIFY } from "@/store/mutations";
+import { CHANGE_PROJECT, ADD_PROJECT } from "@/store/mutations";
 import { NotificationType } from "@/interfaces/INotification";
-import { notificationMixin } from "@/mixins/notify";
+
+import useNotifier from "@/hooks/notifier";
 
 export default defineComponent({
     name: 'ProjetosView',
@@ -37,7 +38,6 @@ export default defineComponent({
             type: String
         }
     },
-    mixins: [notificationMixin],
     mounted () {
         if(this.id) {
             const project = this.store.state.projects.find(proj => proj.id == this.id)
@@ -67,8 +67,10 @@ export default defineComponent({
     },
     setup () {
         const store = useStore()
+        const { notify } = useNotifier()
         return {
-            store
+            store,
+            notify
         }
     }
 })
