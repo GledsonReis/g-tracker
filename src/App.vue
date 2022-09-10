@@ -4,6 +4,7 @@
       <SidebarVue @onChangeMode="changeMode"/>
     </div>
     <div class="column is-three-quarter content">
+      <Notification />
       <RouterView></RouterView>
     </div>
   </main>
@@ -12,12 +13,14 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import SidebarVue from './components/SidebarVue.vue';
+import Notification from './components/Notification.vue';
 
 export default defineComponent({
   name: "App",
   components: {
     SidebarVue,
-  },
+    Notification
+},
   data() {
     return {
       darkMode: false
