@@ -1,8 +1,10 @@
 import IProject from "@/interfaces/iProject";
 import { InjectionKey } from "vue";
 import { createStore, Store, useStore as vuexUseStore } from "vuex";
-import { ADD_PROJECT, CHANGE_PROJECT, DELETE_PROJECT, NOTIFY } from "./mutations";
+import { ADD_PROJECT, CHANGE_PROJECT, DEFINE_PROJECTS, DELETE_PROJECT, NOTIFY } from "./mutations";
 import { INotification } from "../interfaces/INotification";
+import { GET_PROJECTS } from "./actions";
+import http from "@/http";
 
 interface Estado { 
     projects: IProject[]
@@ -32,6 +34,9 @@ export const store = createStore<Estado>({
         [DELETE_PROJECT](state, id: string) {
             state.projects = state.projects.filter(proj => proj.id != id)
         },
+        [DEFINE_PROJECTS] (state, projects: IProject[]) {
+            state.projects = projects
+        },
         [NOTIFY] (state,  newNotification: INotification) {
             newNotification.id = new Date().getTime()
             state.notifications.push(newNotification)
@@ -39,6 +44,12 @@ export const store = createStore<Estado>({
             setTimeout(() => {
                 state.notifications = state.notifications.filter(notification => notification.id != newNotification.id)
             }, 3000)
+        }
+    },
+    actions: {
+        [GET_PROJECTS] ({ commit }) {
+            http.get('projects')
+                .then(response => commit(DEFINE_PROJECTS, response.data))
         }
     }
 })

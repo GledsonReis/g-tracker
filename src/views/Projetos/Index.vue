@@ -42,6 +42,7 @@ import { defineComponent } from "vue";
 import { useStore } from "@/store";
 import { computed } from "@vue/reactivity";
 import { DELETE_PROJECT } from "@/store/mutations";
+import { GET_PROJECTS } from "@/store/actions";
 
 export default defineComponent({
     name: 'ProjectIndex',
@@ -52,6 +53,7 @@ export default defineComponent({
     },
     setup() {
         const store = useStore()
+        store.dispatch(GET_PROJECTS)
         return {
             projects: computed(() => store.state.projects),
             store
