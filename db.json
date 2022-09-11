@@ -2,7 +2,11 @@
   "projects": [
     {
       "id": 1,
-      "name": "Alura Tracker"
+      "name": "Alura Tracker editado"
+    },
+    {
+      "name": "Rails",
+      "id": 2
     }
   ]
 }

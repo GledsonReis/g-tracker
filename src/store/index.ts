@@ -1,9 +1,9 @@
 import IProject from "@/interfaces/iProject";
 import { InjectionKey } from "vue";
 import { createStore, Store, useStore as vuexUseStore } from "vuex";
-import { ADD_PROJECT, CHANGE_PROJECT, DEFINE_PROJECTS, DELETE_PROJECT, NOTIFY } from "./mutations";
+import { ADD_PROJECT, CHANGE_PROJECT, DEFINE_PROJECTS, NOTIFY, REMOVE_PROJECT } from "./mutations";
 import { INotification } from "../interfaces/INotification";
-import { GET_PROJECTS } from "./actions";
+import { CREATE_PROJECT, DELETE_PROJECT, GET_PROJECTS, UPDATE_PROJECT } from "./actions";
 import http from "@/http";
 
 interface Estado { 
@@ -31,7 +31,7 @@ export const store = createStore<Estado>({
             state.projects[index] = project
             console.log(index)
         },
-        [DELETE_PROJECT](state, id: string) {
+        [REMOVE_PROJECT](state, id: string) {
             state.projects = state.projects.filter(proj => proj.id != id)
         },
         [DEFINE_PROJECTS] (state, projects: IProject[]) {
@@ -50,7 +50,19 @@ export const store = createStore<Estado>({
         [GET_PROJECTS] ({ commit }) {
             http.get('projects')
                 .then(response => commit(DEFINE_PROJECTS, response.data))
-        }
+        },
+        [CREATE_PROJECT] (context, projectName: string) {
+            return http.post('projects', { 
+                name: projectName,
+            })
+        },
+        [UPDATE_PROJECT] (context, project: IProject) {
+            return http.put(`projects/${project.id}`, project)
+        },
+        [DELETE_PROJECT] ({ commit }, id: string) {
+            return http.delete(`projects/${id}`)
+                .then(() => commit(REMOVE_PROJECT, id))
+        },
     }
 })
 

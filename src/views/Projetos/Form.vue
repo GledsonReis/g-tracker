@@ -26,8 +26,9 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useStore } from "@/store";
-import { CHANGE_PROJECT, ADD_PROJECT, NOTIFY } from "@/store/mutations";
+import { NOTIFY } from "@/store/mutations";
 import { NotificationType } from "@/interfaces/INotification";
+import { CREATE_PROJECT, UPDATE_PROJECT } from "@/store/actions";
 
 export default defineComponent({
     name: 'ProjetosView',
@@ -50,13 +51,17 @@ export default defineComponent({
     methods: {
         save() {
             if (this.id) {
-                this.store.commit(CHANGE_PROJECT, {
+                this.store.dispatch(UPDATE_PROJECT, {
                     id: this.id,
                     name: this.projectName
-                })
+                }).then(() => this.successRequest())
             } else {
-                this.store.commit(ADD_PROJECT, this.projectName)
+                this.store.dispatch(CREATE_PROJECT, this.projectName)
+                  .then(() => this.successRequest())
             }
+
+        },
+        successRequest() {
             this.projectName = "";
             this.store.commit(NOTIFY, {
                 title: "Novo projecto adicionado",

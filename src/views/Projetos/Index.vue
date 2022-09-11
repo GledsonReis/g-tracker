@@ -41,14 +41,13 @@
 import { defineComponent } from "vue";
 import { useStore } from "@/store";
 import { computed } from "@vue/reactivity";
-import { DELETE_PROJECT } from "@/store/mutations";
-import { GET_PROJECTS } from "@/store/actions";
+import { DELETE_PROJECT, GET_PROJECTS } from "@/store/actions";
 
 export default defineComponent({
     name: 'ProjectIndex',
     methods: {
         deleteProject(id: string) {
-            this.store.commit(DELETE_PROJECT, id)
+            this.store.dispatch(DELETE_PROJECT, id)
         }
     },
     setup() {
