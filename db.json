@@ -2,15 +2,23 @@
   "projects": [
     {
       "id": 1,
-      "name": "Alura Tracker editado"
+      "name": "Alura Tracker editado 2"
     },
     {
-      "name": "Vuejs",
-      "id": 3
+      "id": 3,
+      "name": "Vuejs 2"
     },
     {
       "name": "teste noa salvar",
       "id": 4
+    },
+    {
+      "id": 5,
+      "name": "chique"
+    },
+    {
+      "name": "Python",
+      "id": 6
     }
   ]
 }

@@ -1,10 +1,7 @@
-import IProject from "@/interfaces/iProject";
 import { InjectionKey } from "vue";
 import { createStore, Store, useStore as vuexUseStore } from "vuex";
-import { DEFINE_PROJECTS, NOTIFY, REMOVE_PROJECT } from "./mutations";
+import { NOTIFY } from "./mutations";
 import { INotification } from "../interfaces/INotification";
-import { CREATE_PROJECT, DELETE_PROJECT, GET_PROJECTS, UPDATE_PROJECT } from "./actions";
-import http from "@/http";
 import { project, ProjectState } from "./modules/project";
 
 export interface State {

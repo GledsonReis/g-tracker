@@ -24,11 +24,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { useStore } from "@/store";
 import { NOTIFY } from "@/store/mutations";
 import { NotificationType } from "@/interfaces/INotification";
 import { CREATE_PROJECT, UPDATE_PROJECT } from "@/store/actions";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
     name: 'ProjetosView',
@@ -37,44 +38,58 @@ export default defineComponent({
             type: String
         }
     },
-    mounted () {
-        if(this.id) {
-            const project = this.store.state.project.projects.find(proj => proj.id == this.id)
-            this.projectName = project?.name || ''
-        }
-    },
-    data () {
-        return {
-            projectName: "",
-        };
-    },
     methods: {
-        save() {
-            if (this.id) {
-                this.store.dispatch(UPDATE_PROJECT, {
-                    id: this.id,
-                    name: this.projectName
-                }).then(() => this.successRequest())
-            } else {
-                this.store.dispatch(CREATE_PROJECT, this.projectName)
-                  .then(() => this.successRequest())
-            }
+        // save() {
+        //     if (this.id) {
+        //         this.store.dispatch(UPDATE_PROJECT, {
+        //             id: this.id,
+        //             name: this.projectName
+        //         }).then(() => this.successRequest())
+        //     } else {
+        //         this.store.dispatch(CREATE_PROJECT, this.projectName)
+        //           .then(() => this.successRequest())
+        //     }
 
-        },
-        successRequest() {
-            this.projectName = "";
-            this.store.commit(NOTIFY, {
+        // },
+
+    },
+    setup (props) {
+        const router = useRouter()
+        const store = useStore()
+
+        const projectName = ref("")
+
+        if(props.id) {
+            const project = store.state.project.projects.find(proj => proj.id == props.id)
+            projectName.value = project?.name || ''
+        }
+
+        const successRequest = () => {
+            projectName.value = "";
+            store.commit(NOTIFY, {
                 title: "Novo projecto adicionado",
                 text: "Projeto foi salvo com sucesso! :D",
                 type: NotificationType.SUCESSO
             })
-            this.$router.push('/projetos')
+            router.push('/projetos')
         }
-    },
-    setup () {
-        const store = useStore()
+
+        const save = () => {
+            if (props.id) {
+                store.dispatch(UPDATE_PROJECT, {
+                    id: props.id,
+                    name: projectName.value
+                }).then(() => successRequest())
+            } else {
+                store.dispatch(CREATE_PROJECT, projectName.value)
+                  .then(() => successRequest())
+            }
+
+        }
+
         return {
-            store
+            projectName,
+            save
         }
     }
 })
